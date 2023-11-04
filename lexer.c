@@ -6,7 +6,7 @@
 /*   By: shinsaeki <shinsaeki@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 14:44:10 by shinsaeki         #+#    #+#             */
-/*   Updated: 2023/11/04 14:46:14 by shinsaeki        ###   ########.fr       */
+/*   Updated: 2023/11/04 14:51:32 by shinsaeki        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void tokenizer(const char *expr, t_token *tokens)
             char *endptr;
             tokens[tokenIndex].type = TOKEN_NUMBER;
             tokens[tokenIndex].value = strtol(&expr[i], &endptr, 10);
-            i = endptr - expr; // strtolが終了した場所にiを更新
+            i = endptr - expr;
             tokenIndex++;
         } else {
             switch (expr[i]) {
