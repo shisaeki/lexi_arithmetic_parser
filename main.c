@@ -6,104 +6,48 @@
 /*   By: shinsaeki <shinsaeki@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 10:30:40 by shinsaeki         #+#    #+#             */
-/*   Updated: 2023/10/21 11:45:45 by shinsaeki        ###   ########.fr       */
+/*   Updated: 2023/11/04 14:47:46 by shinsaeki        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ctype.h>
-#include <stdio.h>
+#include "lexi_arithmetic_parser.h"
 
-typedef enum
+int main(int argc, char **argv)
 {
-	TOKEN_NUM,
-	TOKEN_OP,
-	TOKEN_END,
-	TOKEN_ERR,
-	TOKEN_LPAREN,
-	TOKEN_RPAREN
-}	TokenType;
+	t_token tokens[100];
+	tokenizer(argv[1], tokens);
 
-typedef struct	s_token
-{
-	TokenType   type;
-	union
+	printf("Tokens: ");
+	for (int i = 0; tokens[i].type != TOKEN_EOF; i++)
 	{
-		int	 value;
-		char op;
-	}	data;
-}               t_token;
-
-t_token	get_token(const char **expr)
-{
-	while (isspace(**expr))
-		(*expr)++;
-	if (isdigit(**expr))
-	{
-		int value = 0;
-		while (isdigit(**expr))
+		switch (tokens[i].type)
 		{
-			value = value * 10 + (**expr - '0');
-			(*expr)++;
-		}
-		return (t_token){TOKEN_NUM, .data.value = value};
-	}
-
-	switch (**expr)
-	{
-		case '+':
-		case '-':
-		case '*':
-		case '/':
-			return (t_token){TOKEN_OP, .data.op = *((*expr)++)};
-		case '(':
-			(*expr)++;
-			return (t_token){TOKEN_LPAREN};
-		case ')':
-			(*expr)++;
-			return (t_token){TOKEN_RPAREN};
-		case '\0':
-			return (t_token){TOKEN_END};
-		default:
-			return (t_token){TOKEN_ERR};
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc != 2)
-	{
-		printf("Usage: %s <expr>\n", argv[0]);
-		return (1);
-	}
-
-	const char *expr = argv[1];
-	t_token token = get_token(&expr);
-	if (token.type == TOKEN_ERR)
-	{
-		printf("Invalid token found: %c\n", *expr);
-		return (1);
-	}
-
-	while (token.type != TOKEN_END)
-	{
-		switch (token.type)
-		{
-			case TOKEN_NUM:
-				printf("%d\n", token.data.value);
+			case TOKEN_NUMBER:
+				printf("%d ", tokens[i].value);
 				break;
-			case TOKEN_OP:
-				printf("%c\n", token.data.op);
+			case TOKEN_PLUS:
+				printf("+ ");
+				break;
+			case TOKEN_MINUS:
+				printf("- ");
+				break;
+			case TOKEN_MUL:
+				printf("* ");
+				break;
+			case TOKEN_DIV:
+				printf("/ ");
 				break;
 			case TOKEN_LPAREN:
-				printf("(\n");
+				printf("( ");
 				break;
 			case TOKEN_RPAREN:
-				printf(")\n");
+				printf(") ");
+				break;
+			case TOKEN_INVALID:
+				printf("Invalid token\n");
 				break;
 			default:
 				break;
 		}
-		token = get_token(&expr);
 	}
-	return (0);
 }
