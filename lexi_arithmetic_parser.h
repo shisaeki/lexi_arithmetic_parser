@@ -6,7 +6,7 @@
 /*   By: shinsaeki <shinsaeki@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 14:38:45 by shinsaeki         #+#    #+#             */
-/*   Updated: 2023/11/04 14:45:08 by shinsaeki        ###   ########.fr       */
+/*   Updated: 2023/11/05 14:07:05 by shinsaeki        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ typedef struct		s_node
 	}				data;
 }					t_node;
 
-void tokenizer(const char *expr, t_token *tokens);
+void	tokenizer(const char *expr, t_token *tokens);
+t_node	*expression(int *index, t_token *tokens);
+t_node	*term(int *index, t_token *tokens);
+t_node	*factor(int *index, t_token *tokens);
+t_node	*parse(int *index, t_token *tokens);
+int		evaluate(t_node *node);
 
 #endif
